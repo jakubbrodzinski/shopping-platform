@@ -4,6 +4,7 @@ import com.assignment.shopping_platform.dto.OrderCreateDto;
 import com.assignment.shopping_platform.repositroy.model.Order;
 import com.assignment.shopping_platform.repositroy.model.OrderItem;
 import com.assignment.shopping_platform.repositroy.model.Product;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 import static java.util.function.Function.identity;
 import static java.util.stream.IntStream.range;
 
+@Component
 public class OrderFactory {
     public Order create(OrderCreateDto orderCreateDto, List<Product> lineItems) {
         var order = new Order();

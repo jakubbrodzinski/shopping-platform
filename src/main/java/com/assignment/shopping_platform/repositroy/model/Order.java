@@ -7,7 +7,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "ORDER_ENTITY")
+@Entity
+@Table(name = "ORDER_ENTITY")
 @Data
 public class Order {
     @Id

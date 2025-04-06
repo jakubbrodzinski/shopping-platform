@@ -6,7 +6,7 @@ import org.joda.money.CurrencyUnit;
 
 import java.math.BigDecimal;
 
-@Entity(name = "ORDER_ITEM")
+@Entity
 @Data
 public class OrderItem {
     @Id

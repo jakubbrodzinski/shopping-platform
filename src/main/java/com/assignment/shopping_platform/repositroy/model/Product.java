@@ -7,7 +7,7 @@ import org.joda.money.CurrencyUnit;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Entity(name = "PRODUCT")
+@Entity
 @Data
 public class Product {
     @Id
