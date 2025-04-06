@@ -14,14 +14,18 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, updatable = false)
+    @Column(unique = true, updatable = false,nullable = false)
     private UUID externalId;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private CurrencyUnit currency;
 
+    @Column(nullable = false)
     private BigDecimal price;
 }

@@ -2,7 +2,6 @@ package com.assignment.shopping_platform.repositroy.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.joda.money.CurrencyUnit;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,9 +14,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, updatable = false)
+    @Column(unique = true, updatable = false, nullable = false)
     private UUID externalId;
 
+    @Column(nullable = false)
     private Instant createdAt;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")

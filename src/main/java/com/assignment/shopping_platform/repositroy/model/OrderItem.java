@@ -21,7 +21,9 @@ public class OrderItem {
     @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 
+    @Column(nullable = false)
     private CurrencyUnit currency;
 
+    @Column(nullable = false)
     private BigDecimal price;
 }
