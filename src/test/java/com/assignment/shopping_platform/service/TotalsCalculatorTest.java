@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.joda.money.CurrencyUnit.EUR;
 import static org.joda.money.CurrencyUnit.USD;
 
-class OrderCalculatorTest {
+class TotalsCalculatorTest {
     private final TotalsCalculator calculator = new TotalsCalculator();
 
     @Test

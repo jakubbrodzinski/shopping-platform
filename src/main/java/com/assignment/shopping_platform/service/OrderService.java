@@ -8,9 +8,11 @@ import com.assignment.shopping_platform.repositroy.OrderRepository;
 import com.assignment.shopping_platform.repositroy.ProductRepository;
 import com.assignment.shopping_platform.repositroy.model.Order;
 import com.assignment.shopping_platform.repositroy.model.Product;
+import com.assignment.shopping_platform.shared.Page;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -56,8 +58,8 @@ public class OrderService {
         }
     }
 
-    public List<OrderDto> queryByCreatedAtTimestamp(Instant from, Instant to, int pageNumber, int pageSize) {
-        var orderIds = orderRepository.findByCreatedAtBetween(from, to, pageRequest(pageNumber, pageSize))
+    public List<OrderDto> queryByCreatedAtTimestamp(Instant from, Instant to, Page page) {
+        var orderIds = orderRepository.findByCreatedAtBetween(from, to, pageRequest(page))
                 .map(Order::getId)
                 .get().collect(toSet());
         return orderRepository.fetchOrdersWithAssociations(orderIds).stream()
@@ -65,8 +67,8 @@ public class OrderService {
                 .toList();
     }
 
-    private static PageRequest pageRequest(int pageNumber, int pageSize) {
-        return PageRequest.of(pageNumber, pageSize, SORT_ORDER);
+    private static Pageable pageRequest(Page page) {
+        return PageRequest.of(page.pageNumber(), page.pageSize(), SORT_ORDER);
     }
 }
 

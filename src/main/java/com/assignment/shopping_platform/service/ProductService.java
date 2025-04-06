@@ -5,6 +5,7 @@ import com.assignment.shopping_platform.dto.ProductUpdateDto;
 import com.assignment.shopping_platform.exception.ProductNotFoundException;
 import com.assignment.shopping_platform.factory.ProductFactory;
 import com.assignment.shopping_platform.repositroy.ProductRepository;
+import com.assignment.shopping_platform.shared.Page;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -37,14 +38,14 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(productId));
     }
 
-    public List<ProductDto> query(int pageNumber, int pageSize) {
-        return productRepository.findAll(pageRequest(pageNumber, pageSize))
+    public List<ProductDto> query(Page page) {
+        return productRepository.findAll(pageRequest(page))
                 .map(ProductDto::from)
                 .get()
                 .toList();
     }
 
-    private static PageRequest pageRequest(int pageNumber, int pageSize) {
-        return PageRequest.of(pageNumber, pageSize, SORTING_ORDER);
+    private static PageRequest pageRequest(Page page) {
+        return PageRequest.of(page.pageNumber(), page.pageSize(), SORTING_ORDER);
     }
 }

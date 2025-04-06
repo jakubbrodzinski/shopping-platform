@@ -5,6 +5,7 @@ import com.assignment.shopping_platform.dto.OrderDto;
 import com.assignment.shopping_platform.exception.ProductNotFoundException;
 import com.assignment.shopping_platform.repositroy.ProductRepository;
 import com.assignment.shopping_platform.repositroy.model.Product;
+import com.assignment.shopping_platform.shared.Page;
 import com.assignment.shopping_platform.utils.OrderMotherObject;
 import jakarta.transaction.Transactional;
 import org.assertj.core.groups.Tuple;
@@ -89,7 +90,7 @@ class OrderServiceTest {
             var p2 = persistProduct("p 2", USD("0.12"));
             var order = orderMotherObject.createOrder(parse("2025-01-25T12:00:00Z"), p1, USD("12.00"), p2, USD("3.15"));
 
-            var orderDtos = orderService.queryByCreatedAtTimestamp(parse("2025-01-24T12:00:00Z"), parse("2025-01-26T12:00:00Z"), 0, 10);
+            var orderDtos = orderService.queryByCreatedAtTimestamp(parse("2025-01-24T12:00:00Z"), parse("2025-01-26T12:00:00Z"), new Page(0, 10));
 
             assertThat(orderDtos)
                     .singleElement()
@@ -106,13 +107,13 @@ class OrderServiceTest {
         }
 
         @Test
-        void shouldPaginateBasedOnCreatedAtDescTimestamp(){
+        void shouldPaginateBasedOnCreatedAtDescTimestamp() {
             var product = persistProduct("p 1", USD("13.99"));
             orderMotherObject.createOrder(parse("2025-01-23T12:00:00Z"), product, USD("12.00"));
             orderMotherObject.createOrder(parse("2025-01-25T12:00:00Z"), product, USD("15.00"), product, USD("3.15"));
             var order3 = orderMotherObject.createOrder(parse("2025-01-26T12:15:00Z"), product, USD("17.00"));
 
-            var orderDtos = orderService.queryByCreatedAtTimestamp(parse("2025-01-24T12:00:00Z"), parse("2025-01-27T12:00:00Z"), 0, 1);
+            var orderDtos = orderService.queryByCreatedAtTimestamp(parse("2025-01-24T12:00:00Z"), parse("2025-01-27T12:00:00Z"), new Page(0, 1));
 
             assertThat(orderDtos)
                     .singleElement()

@@ -5,6 +5,7 @@ import com.assignment.shopping_platform.dto.ProductUpdateDto;
 import com.assignment.shopping_platform.exception.ProductNotFoundException;
 import com.assignment.shopping_platform.repositroy.ProductRepository;
 import com.assignment.shopping_platform.repositroy.model.Product;
+import com.assignment.shopping_platform.shared.Page;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -98,7 +99,7 @@ class ProductServiceTest {
             persistProduct("product-1", "0.15");
             persistProduct("product-2", "0.31");
 
-            var results = productService.query(0, 1);
+            var results = productService.query(new Page(0, 1));
 
             assertThat(results)
                     .singleElement()
@@ -108,7 +109,7 @@ class ProductServiceTest {
 
         @Test
         void shouldReturnEmptyListForInvalidPage() {
-            var results = productService.query(999, 10);
+            var results = productService.query(new Page(999, 10));
 
             assertThat(results).isEmpty();
         }
@@ -119,7 +120,7 @@ class ProductServiceTest {
             persistProduct("product-2", "0.31");
             persistProduct("product-3", "0.31");
 
-            var results = productService.query(1, 2);
+            var results = productService.query(new Page(1, 2));
 
             assertThat(results)
                     .singleElement()
