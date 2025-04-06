@@ -8,4 +8,8 @@ public class ProductNotFoundException extends RuntimeException {
     public ProductNotFoundException(UUID productId) {
         super(ERROR_MESSAGE.formatted(productId));
     }
+
+    public ProductNotFoundException(){
+
+    }
 }

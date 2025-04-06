@@ -18,6 +18,9 @@ public class Order {
     private UUID externalId;
 
     @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     private Instant createdAt;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
