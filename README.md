@@ -6,7 +6,11 @@ For authentication, **JWT** (JSON Web Token) would be a strong choice, particula
 JWT enables easy integration with Spring Security and scales well as the app grows. It is a widely accepted standard for securing REST APIs, providing both simplicity and flexibility. Additionally, it supports both short-lived access tokens and refresh tokens, ensuring secure communication in a distributed system. Furthermore, JWT could be part of a larger infrastructure component dedicated to authentication and authorization, adhering to the separation of concerns principle. This could also enable Single Sign-On (SSO), allowing users to authenticate across multiple applications with a unified identity management system.
 
 ### How can we make the service redunant?
-
+One way to achieve such redundancy is to rely on external eCommerce platforms like Shopify, or BigCommerce. Considerations:
+- Cloud-Based Redundancy: These platforms are cloud-based and provide built-in redundancy, scaling, and fault tolerance, ensuring that your store remains operational even in the case of failure.
+- Authentication & SSO: If we were to support our clients accounts, we would need to provide some sort of SSO service that their system could validate the credentials against.
+- Data Sync & Integration: That's where most of the work on my/our side would be. Data synchronization (e.g., products, orders) with the platform is handled through APIs, webhooks, or import/export tools, ensuring reliable data flow between your system and the platform.
+We would need to build some infrastructure to push and poll all the informations of such platform.
 
 ## Future improvements
 ### API Evolution: HATEOAS Support
