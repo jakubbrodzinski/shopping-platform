@@ -6,7 +6,6 @@ import com.assignment.shopping_platform.exception.ProductNotFoundException;
 import com.assignment.shopping_platform.factory.OrderFactory;
 import com.assignment.shopping_platform.repositroy.OrderRepository;
 import com.assignment.shopping_platform.repositroy.ProductRepository;
-import com.assignment.shopping_platform.repositroy.model.Order;
 import com.assignment.shopping_platform.repositroy.model.Product;
 import com.assignment.shopping_platform.shared.Page;
 import jakarta.transaction.Transactional;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toSet;
 import static org.springframework.data.domain.Sort.Order.desc;
 
@@ -59,11 +59,10 @@ public class OrderService {
     }
 
     public List<OrderDto> queryByCreatedAtTimestamp(Instant from, Instant to, Page page) {
-        var orderIds = orderRepository.findByCreatedAtBetween(from, to, pageRequest(page))
-                .map(Order::getId)
-                .get().collect(toSet());
+        var orderIds = orderRepository.findByCreatedAtBetween(from, to, pageRequest(page)).getContent();
         return orderRepository.fetchOrdersWithAssociations(orderIds).stream()
                 .map(order -> OrderDto.from(order, totalsCalculator.calculateTotals(order)))
+                .sorted(comparing(OrderDto::createdAt).reversed())
                 .toList();
     }
 

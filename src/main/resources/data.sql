@@ -12,7 +12,7 @@ INSERT INTO "PRODUCT" (id, external_id, name, description, price, currency) VALU
 (10, '11111111-1111-1111-1111-111111111120', 'Docking Station', 'USB-C docking station', 149.00, 'USD');
 
 -- Insert Orders (no currency)
-INSERT INTO "ORDER" (id, external_id, email, created_at) VALUES
+INSERT INTO "ORDER_ENTITY" (id, external_id, email, created_at) VALUES
 (1, '22222222-2222-2222-2222-222222222201', 'a@b.com', '2024-01-10T10:30:00Z'),
 (2, '22222222-2222-2222-2222-222222222202', 'xyz@gmail.com', '2024-02-15T14:15:00Z'),
 (3, '22222222-2222-2222-2222-222222222203', 'a@b.com', '2024-03-20T09:45:00Z'),

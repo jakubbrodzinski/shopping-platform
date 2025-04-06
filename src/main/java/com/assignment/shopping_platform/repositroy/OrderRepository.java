@@ -16,9 +16,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.items i LEFT JOIN FETCH i.product WHERE o.externalId = :externalId")
     Optional<Order> findByExternalId(UUID externalId);
 
-    @Query("SELECT o FROM Order o WHERE o.createdAt BETWEEN :from AND :to")
-    Page<Order> findByCreatedAtBetween(Instant from, Instant to, Pageable pageable);
+    @Query("SELECT o.id FROM Order o WHERE o.createdAt BETWEEN :from AND :to")
+    Page<Long> findByCreatedAtBetween(Instant from, Instant to, Pageable pageable);
 
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.items i LEFT JOIN FETCH i.product WHERE o IN :orderIds")
-    List<Order> fetchOrdersWithAssociations(Set<Long> orderIds);
+    List<Order> fetchOrdersWithAssociations(List<Long> orderIds);
 }
