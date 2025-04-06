@@ -2,14 +2,18 @@ package com.assignment.shopping_platform.controller;
 
 import com.assignment.shopping_platform.dto.ProductDto;
 import com.assignment.shopping_platform.dto.ProductUpdateDto;
+import com.assignment.shopping_platform.exception.ProductNotFoundException;
 import com.assignment.shopping_platform.service.ProductService;
 import com.assignment.shopping_platform.shared.Page;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,5 +38,10 @@ public class ProductController {
     public ProductDto updateProduct(@PathVariable("productId") String productId,
                                     @Validated @RequestBody ProductUpdateDto productUpdateDto) {
         return productService.update(UUID.fromString(productId), productUpdateDto);
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFound(ProductNotFoundException ex) {
+        return ResponseEntity.status(NOT_FOUND).body(ex.getMessage());
     }
 }

@@ -2,6 +2,7 @@ package com.assignment.shopping_platform.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import static java.util.Objects.requireNonNullElseGet;
 @Builder
 public record OrderCreateDto(
         @Email String email,
-        @Valid List<OrderItemDto> items) {
+        @NotEmpty @Valid List<OrderItemDto> items) {
 
     public OrderCreateDto {
         items = requireNonNullElseGet(items, Collections::emptyList);

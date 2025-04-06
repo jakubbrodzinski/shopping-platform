@@ -47,7 +47,6 @@ class ProductControllerTest {
                 .statusCode(200)
                 .extract().asString();
 
-        System.out.println(actualResponse);
         assertEquals("""
                 [{
                   "id": "%s",
@@ -139,6 +138,6 @@ class ProductControllerTest {
                 .when()
                 .put("/products/{productId}", "25a483b6-ad09-4134-befa-44a9116544ca")
                 .then()
-                .statusCode(400);
+                .statusCode(404);
     }
 }

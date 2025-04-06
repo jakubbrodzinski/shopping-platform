@@ -1,0 +1,43 @@
+{
+  "email": "newcustomer@example.com",
+  "items": [
+    {
+      "itemId": 1,
+      "name": "p one",
+      "price": {
+        "currency": "EUR",
+        "amount": "1.33"
+      }
+    },
+    {
+      "itemId": 2,
+      "name": "p two",
+      "price": {
+        "currency": "USD",
+        "amount": "100.01"
+      }
+    },
+    {
+      "itemId": 2,
+      "name": "p two",
+      "price": {
+        "currency": "USD",
+        "amount": "100.01"
+      }
+    }
+  ],
+  "totalsByCurrency": [
+    {
+      "totalPrice": {
+        "currency": "EUR",
+        "amount": "1.33"
+      }
+    },
+    {
+      "totalPrice": {
+        "currency": "USD",
+        "amount": "200.02"
+      }
+    }
+  ]
+}
