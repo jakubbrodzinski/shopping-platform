@@ -3,7 +3,6 @@ package com.assignment.shopping_platform.controller;
 import com.assignment.shopping_platform.repositroy.ProductRepository;
 import com.assignment.shopping_platform.repositroy.model.Product;
 import io.restassured.RestAssured;
-import jakarta.transaction.Transactional;
 import org.joda.money.Money;
 import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
