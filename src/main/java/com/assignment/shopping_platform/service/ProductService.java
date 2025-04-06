@@ -20,14 +20,16 @@ import static org.springframework.data.domain.Sort.Order.asc;
 @Transactional
 @RequiredArgsConstructor
 public class ProductService {
+    private static final Sort SORTING_ORDER = Sort.by(asc("name"));
+
     private final ProductRepository productRepository;
     private final ProductFactory productFactory;
 
-    ProductDto create(ProductUpdateDto productUpdateDto) {
+    public ProductDto save(ProductUpdateDto productUpdateDto) {
         return ProductDto.from(productRepository.save(productFactory.create(productUpdateDto)));
     }
 
-    ProductDto update(UUID productId, ProductUpdateDto productUpdateDto) {
+    public ProductDto update(UUID productId, ProductUpdateDto productUpdateDto) {
         return productRepository.findByExternalId(productId)
                 .map(product -> productFactory.update(product, productUpdateDto))
                 .map(productRepository::save)
@@ -35,7 +37,7 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(productId));
     }
 
-    List<ProductDto> query(int pageNumber, int pageSize) {
+    public List<ProductDto> query(int pageNumber, int pageSize) {
         return productRepository.findAll(pageRequest(pageNumber, pageSize))
                 .map(ProductDto::from)
                 .get()
@@ -43,6 +45,6 @@ public class ProductService {
     }
 
     private static PageRequest pageRequest(int pageNumber, int pageSize) {
-        return PageRequest.of(pageNumber, pageSize, Sort.by(asc("name")));
+        return PageRequest.of(pageNumber, pageSize, SORTING_ORDER);
     }
 }

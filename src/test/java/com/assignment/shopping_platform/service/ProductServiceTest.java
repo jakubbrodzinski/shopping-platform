@@ -37,7 +37,7 @@ class ProductServiceTest {
                     .price(EUR("3.15"))
                     .build();
 
-            var result = productService.create(dto);
+            var result = productService.save(dto);
 
             assertThat(result.name()).isEqualTo("New Product");
             assertThat(result.description()).isEqualTo("Test Description");
@@ -52,8 +52,8 @@ class ProductServiceTest {
                     .price(EUR("1.15"))
                     .build();
 
-            var first = productService.create(dto);
-            var second = productService.create(dto);
+            var first = productService.save(dto);
+            var second = productService.save(dto);
 
             assertThat(first.id()).isNotEqualTo(second.id());
         }

@@ -25,7 +25,7 @@ public record OrderDto(
     }
 
     public record OrderItemDto(long itemId, String name, Money price) {
-        static OrderItemDto from(OrderItem orderItem) {
+        public static OrderItemDto from(OrderItem orderItem) {
             return new OrderItemDto(orderItem.getId(), orderItem.getProduct().getName(), Money.of(orderItem.getCurrency(), orderItem.getPrice()));
         }
     }
