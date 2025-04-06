@@ -132,7 +132,10 @@ class ProductControllerTest {
                 .body("""
                         {
                             "name": "Updated Product",
-                            "price": 150.0,
+                             "price": {
+                                "currency": "USD",
+                                "amount": "1.99"
+                            },
                             "description": "Updated description"
                         }""")
                 .when()
