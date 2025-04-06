@@ -4,12 +4,10 @@ import com.assignment.shopping_platform.dto.OrderCreateDto;
 import com.assignment.shopping_platform.dto.OrderDto;
 import com.assignment.shopping_platform.exception.ProductNotFoundException;
 import com.assignment.shopping_platform.repositroy.ProductRepository;
-import com.assignment.shopping_platform.repositroy.model.Product;
 import com.assignment.shopping_platform.shared.Page;
-import com.assignment.shopping_platform.utils.OrderMotherObject;
+import com.assignment.shopping_platform.utils.TestMotherObject;
 import jakarta.transaction.Transactional;
 import org.assertj.core.groups.Tuple;
-import org.joda.money.Money;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ class OrderServiceTest {
     private ProductRepository productRepository;
 
     @Autowired
-    private OrderMotherObject orderMotherObject;
+    private TestMotherObject testMotherObject;
 
     @Autowired
     private OrderService orderService;
@@ -40,8 +38,8 @@ class OrderServiceTest {
     class PlaceOrderTests {
         @Test
         void shouldCreateOrderWithValidItems() {
-            var product1 = persistProduct("p-1", EUR("3.15"));
-            var product2 = persistProduct("p-2", USD("2.01"));
+            var product1 = testMotherObject.createProduct("p-1", EUR("3.15"));
+            var product2 = testMotherObject.createProduct("p-2", USD("2.01"));
             var orderCreateDto = OrderCreateDto.builder()
                     .email("customer@example.com")
                     .items(List.of(
@@ -86,9 +84,9 @@ class OrderServiceTest {
     class GetOrderTests {
         @Test
         void shouldReturnOrderThatWasCreatedWithinProvidedRange() {
-            var p1 = persistProduct("p 1", USD("13.99"));
-            var p2 = persistProduct("p 2", USD("0.12"));
-            var order = orderMotherObject.createOrder(parse("2025-01-25T12:00:00Z"), p1, USD("12.00"), p2, USD("3.15"));
+            var p1 = testMotherObject.createProduct("p 1", USD("13.99"));
+            var p2 = testMotherObject.createProduct("p 2", USD("0.12"));
+            var order = testMotherObject.createOrder(parse("2025-01-25T12:00:00Z"), p1, USD("12.00"), p2, USD("3.15"));
 
             var orderDtos = orderService.queryByCreatedAtTimestamp(parse("2025-01-24T12:00:00Z"), parse("2025-01-26T12:00:00Z"), new Page(0, 10));
 
@@ -108,10 +106,10 @@ class OrderServiceTest {
 
         @Test
         void shouldPaginateBasedOnCreatedAtDescTimestamp() {
-            var product = persistProduct("p 1", USD("13.99"));
-            orderMotherObject.createOrder(parse("2025-01-23T12:00:00Z"), product, USD("12.00"));
-            orderMotherObject.createOrder(parse("2025-01-25T12:00:00Z"), product, USD("15.00"), product, USD("3.15"));
-            var order3 = orderMotherObject.createOrder(parse("2025-01-26T12:15:00Z"), product, USD("17.00"));
+            var product = testMotherObject.createProduct("p 1", USD("13.99"));
+            testMotherObject.createOrder(parse("2025-01-23T12:00:00Z"), product, USD("12.00"));
+            testMotherObject.createOrder(parse("2025-01-25T12:00:00Z"), product, USD("15.00"), product, USD("3.15"));
+            var order3 = testMotherObject.createOrder(parse("2025-01-26T12:15:00Z"), product, USD("17.00"));
 
             var orderDtos = orderService.queryByCreatedAtTimestamp(parse("2025-01-24T12:00:00Z"), parse("2025-01-27T12:00:00Z"), new Page(0, 1));
 
@@ -120,15 +118,5 @@ class OrderServiceTest {
                     .extracting(OrderDto::id)
                     .isEqualTo(order3.getExternalId().toString());
         }
-    }
-
-    private Product persistProduct(String name, Money price) {
-        var product = new Product();
-        product.setExternalId(UUID.randomUUID());
-        product.setName(name);
-        product.setDescription("Desc - " + name);
-        product.setPrice(price.getAmount());
-        product.setCurrency(price.getCurrencyUnit());
-        return productRepository.save(product);
     }
 }

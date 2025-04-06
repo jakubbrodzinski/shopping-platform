@@ -1,9 +1,7 @@
 package com.assignment.shopping_platform.controller;
 
-import com.assignment.shopping_platform.repositroy.ProductRepository;
-import com.assignment.shopping_platform.repositroy.model.Product;
+import com.assignment.shopping_platform.utils.TestMotherObject;
 import io.restassured.RestAssured;
-import org.joda.money.Money;
 import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-
-import java.util.UUID;
 
 import static com.assignment.shopping_platform.TestFixtures.EUR;
 import static com.assignment.shopping_platform.TestFixtures.USD;
@@ -24,7 +20,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ProductControllerTest {
     @Autowired
-    private ProductRepository productRepository;
+    private TestMotherObject testMotherObject;
 
     @LocalServerPort
     private Integer port;
@@ -36,13 +32,13 @@ class ProductControllerTest {
 
     @AfterEach
     void tearDown(){
-        productRepository.deleteAll();
+        testMotherObject.clear();
     }
 
     @Test
     void shouldReturnProductsWithDefaultPageRequest() throws JSONException {
-        var p1 = persistProduct("product 1", EUR("1.33"));
-        var p2 = persistProduct("product 2", USD("1.99"));
+        var p1 = testMotherObject.createProduct("product 1", EUR("1.33"));
+        var p2 = testMotherObject.createProduct("product 2", USD("1.99"));
 
         var actualResponse = given()
                 .when()
@@ -99,7 +95,7 @@ class ProductControllerTest {
 
     @Test
     void shouldUpdateProduct() throws JSONException {
-        var p1 = persistProduct("product 1", EUR("1.33"));
+        var p1 = testMotherObject.createProduct("product 1", EUR("1.33"));
 
         var response = given()
                 .contentType("application/json")
@@ -144,15 +140,5 @@ class ProductControllerTest {
                 .put("/products/{productId}", "25a483b6-ad09-4134-befa-44a9116544ca")
                 .then()
                 .statusCode(400);
-    }
-
-    private Product persistProduct(String name, Money price) {
-        var product = new Product();
-        product.setExternalId(UUID.randomUUID());
-        product.setName(name);
-        product.setDescription("some description for " + name);
-        product.setPrice(price.getAmount());
-        product.setCurrency(price.getCurrencyUnit());
-        return productRepository.save(product);
     }
 }

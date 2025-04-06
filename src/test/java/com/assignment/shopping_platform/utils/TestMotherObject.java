@@ -16,11 +16,21 @@ import java.util.UUID;
 
 @Component
 @Transactional
-public class OrderMotherObject {
-    @Autowired
-    private ProductRepository productRepository;
+public class TestMotherObject {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ProductRepository productRepository;
+
+    public Product createProduct(String name, Money price) {
+        var product = new Product();
+        product.setExternalId(UUID.randomUUID());
+        product.setName(name);
+        product.setDescription("some description for " + name);
+        product.setPrice(price.getAmount());
+        product.setCurrency(price.getCurrencyUnit());
+        return productRepository.save(product);
+    }
 
     public Order createOrder(Instant createdAt, Product product1, Money price1) {
         var order = order(createdAt);
@@ -49,5 +59,10 @@ public class OrderMotherObject {
         orderItem.setPrice(price.getAmount());
         orderItem.setCurrency(price.getCurrencyUnit());
         return orderItem;
+    }
+
+    public void clear(){
+        orderRepository.deleteAll();
+        productRepository.deleteAll();
     }
 }
